@@ -1,4 +1,4 @@
-package fr.kaibee.mars.rover;
+package fr.kaibee.mars.rover.domain;
 
 import java.util.Objects;
 
@@ -19,6 +19,22 @@ public class Position {
         return positionY;
     }
 
+    public Position moveForwardPositionX() {
+        return new Position(positionX + 1, positionY);
+    }
+
+    public Position moveBackwardPositionX() {
+        return new Position(positionX - 1, positionY);
+    }
+
+    public Position moveForwardPositionY() {
+        return new Position(positionX, positionY + 1);
+    }
+
+    public Position moveBackwardPositionY() {
+        return new Position(positionX, positionY - 1);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -30,5 +46,13 @@ public class Position {
     @Override
     public int hashCode() {
         return Objects.hash(positionX, positionY);
+    }
+
+    @Override
+    public String toString() {
+        return "Position{" +
+                "positionX=" + positionX +
+                ", positionY=" + positionY +
+                '}';
     }
 }
