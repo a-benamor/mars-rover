@@ -47,6 +47,41 @@ public class Coordinates {
         }
     }
 
+    public void performTurnLeftMovement() {
+        switch (direction){
+            case NORTH: {
+                direction = Direction.WEST;
+                break;
+            } case EAST: {
+                direction = Direction.NORTH;
+                break;
+            }case SOUTH: {
+                direction = Direction.EAST;
+                break;
+            }case WEST: {
+                direction = Direction.SOUTH;
+                break;
+            }
+        }
+    }
+
+    public void performTurnRightMovement() {
+        switch (direction){
+            case NORTH: {
+                direction = Direction.EAST;
+                break;
+            } case EAST: {
+                direction = Direction.SOUTH;
+                break;
+            }case SOUTH: {
+                direction = Direction.WEST;
+                break;
+            }case WEST: {
+                direction = Direction.NORTH;
+                break;
+            }
+        }
+    }
     public Position getPosition() {
         return position;
     }

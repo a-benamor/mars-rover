@@ -1,7 +1,7 @@
 package fr.kaibee.mars.rover;
 
-import fr.kaibee.mars.rover.domain.RoverCommand;
 import fr.kaibee.mars.rover.domain.Rover;
+import fr.kaibee.mars.rover.domain.RoverMovement;
 import fr.kaibee.mars.rover.ports.inputs.RoverService;
 
 import java.util.List;
@@ -15,8 +15,8 @@ public class RoverServiceImp implements RoverService {
 
     @Override
     public void executeCommandsOnRover(Rover rover, Character[] clientCommands) {
-        List<RoverCommand> roverCommands = clientCommandInterpreter.toRoverCommands(clientCommands);
+        List<RoverMovement> roverMovements = clientCommandInterpreter.toRoverMovement(clientCommands);
 
-        rover.executeCommands(roverCommands);
+        rover.performMovements(roverMovements);
     }
 }

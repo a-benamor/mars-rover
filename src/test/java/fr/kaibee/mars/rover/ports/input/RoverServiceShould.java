@@ -15,6 +15,8 @@ class RoverServiceShould {
 
     private static final Character FORWARD_CLIENT_COMMAND = 'f';
     private static final Character BACKWARD_CLIENT_COMMAND = 'b';
+    private static final Character TURN_LEFT_CLIENT_COMMAND = 'l';
+    private static final Character TURN_RIGHT_CLIENT_COMMAND = 'r';
 
     private RoverService roverService;
     private Rover rover;
@@ -35,14 +37,19 @@ class RoverServiceShould {
 
     @Test
     void return_rover_with_the_right_coordinates_after_commands_execution() {
-        Character[] clientCommands = {FORWARD_CLIENT_COMMAND, BACKWARD_CLIENT_COMMAND,
-                FORWARD_CLIENT_COMMAND, FORWARD_CLIENT_COMMAND};
+        Character[] clientCommands = {FORWARD_CLIENT_COMMAND,FORWARD_CLIENT_COMMAND,
+                BACKWARD_CLIENT_COMMAND,FORWARD_CLIENT_COMMAND,
+                TURN_LEFT_CLIENT_COMMAND,FORWARD_CLIENT_COMMAND,
+                TURN_RIGHT_CLIENT_COMMAND, FORWARD_CLIENT_COMMAND,
+                FORWARD_CLIENT_COMMAND, FORWARD_CLIENT_COMMAND,
+                TURN_RIGHT_CLIENT_COMMAND, FORWARD_CLIENT_COMMAND};
+
         roverService.executeCommandsOnRover(rover, clientCommands);
 
-        Position expectedPosition = new Position(0, 2);
+        Position expectedPosition = new Position(0, 5);
         Coordinates expectedCoordinates = Coordinates.Builder.builder()
                 .position(expectedPosition)
-                .direction(Direction.NORTH)
+                .direction(Direction.EAST)
                 .build();
 
         Assertions.assertEquals(expectedCoordinates, rover.getCoordinates());

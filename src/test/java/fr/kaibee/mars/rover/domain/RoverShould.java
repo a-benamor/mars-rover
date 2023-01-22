@@ -16,14 +16,8 @@ class RoverShould {
     private Coordinates startedCoordinates;
     private Position startedPosition;
 
-    private RoverCommand forwardRoverCommand;
-    private RoverCommand backwardRoverCommand;
-
     @BeforeEach
     void setUp() {
-        forwardRoverCommand = RoverCommand.toRoverCommand(FORWARD);
-        backwardRoverCommand = RoverCommand.toRoverCommand(BACKWARD);
-
         startedPosition = new Position(0, 0);
         startedCoordinates = createCoordinates(startedPosition, Direction.NORTH);
         rover = new Rover(startedCoordinates);
@@ -38,10 +32,10 @@ class RoverShould {
     }
 
     @Test
-    void have_the_right_coordinates_after_executing_forward_command_in_north_direction() {
-        List<RoverCommand> roverCommands = List.of(RoverCommand.toRoverCommand(FORWARD));
+    void have_the_right_coordinates_after_performing_forward_movement_in_north_direction() {
+        List<RoverMovement> roverMovements = List.of(RoverMovement.F);
 
-        rover.executeCommands(roverCommands);
+        rover.performMovements(roverMovements);
 
         Position expectedPosition = new Position(0, 1);
         Coordinates expectedCoordinates = createCoordinates(expectedPosition, Direction.NORTH);
@@ -49,12 +43,12 @@ class RoverShould {
     }
 
     @Test
-    void have_the_right_coordinates_after_executing_forward_command_in_east_direction() {
+    void have_the_right_coordinates_after_performing_forward_movement_in_east_direction() {
         startedCoordinates = createCoordinates(startedPosition, Direction.EAST);
         rover = new Rover(startedCoordinates);
-        List<RoverCommand> roverCommands = List.of(RoverCommand.toRoverCommand(FORWARD));
+        List<RoverMovement> roverMovements = List.of(RoverMovement.F);
 
-        rover.executeCommands(roverCommands);
+        rover.performMovements(roverMovements);
 
         Position expectedPosition = new Position(1, 0);
         Coordinates expectedCoordinates = createCoordinates(expectedPosition, Direction.EAST);
@@ -62,12 +56,12 @@ class RoverShould {
     }
 
     @Test
-    void have_the_right_coordinates_after_executing_forward_command_in_south_direction() {
+    void have_the_right_coordinates_after_performing_forward_movement_in_south_direction() {
         startedCoordinates = createCoordinates(startedPosition, Direction.SOUTH);
         rover = new Rover(startedCoordinates);
-        List<RoverCommand> roverCommands = List.of(RoverCommand.toRoverCommand(FORWARD));
+        List<RoverMovement> roverMovements = List.of(RoverMovement.F);
 
-        rover.executeCommands(roverCommands);
+        rover.performMovements(roverMovements);
 
         Position expectedPosition = new Position(0, -1);
         Coordinates expectedCoordinates = createCoordinates(expectedPosition, Direction.SOUTH);
@@ -75,12 +69,12 @@ class RoverShould {
     }
 
     @Test
-    void have_the_right_coordinates_after_executing_forward_command_in_west_direction() {
+    void have_the_right_coordinates_after_performing_forward_movement_in_west_direction() {
         startedCoordinates = createCoordinates(startedPosition, Direction.WEST);
         rover = new Rover(startedCoordinates);
-        List<RoverCommand> roverCommands = List.of(RoverCommand.toRoverCommand(FORWARD));
+        List<RoverMovement> roverMovements = List.of(RoverMovement.F);
 
-        rover.executeCommands(roverCommands);
+        rover.performMovements(roverMovements);
 
         Position expectedPosition = new Position(-1, 0);
         Coordinates expectedCoordinates = createCoordinates(expectedPosition, Direction.WEST);
@@ -88,10 +82,10 @@ class RoverShould {
     }
 
     @Test
-    void have_the_right_coordinates_after_executing_backward_command_in_north_direction() {
-        List<RoverCommand> roverCommands = List.of(RoverCommand.toRoverCommand(BACKWARD));
+    void have_the_right_coordinates_after_performing_backward_movement_in_north_direction() {
+        List<RoverMovement> roverMovements = List.of(RoverMovement.B);
 
-        rover.executeCommands(roverCommands);
+        rover.performMovements(roverMovements);
 
         Position expectedPosition = new Position(0, -1);
         Coordinates expectedCoordinates = createCoordinates(expectedPosition, Direction.NORTH);
@@ -99,12 +93,12 @@ class RoverShould {
     }
 
     @Test
-    void have_the_right_coordinates_after_executing_backward_command_in_east_direction() {
+    void have_the_right_coordinates_after_performing_backward_movement_in_east_direction() {
         startedCoordinates = createCoordinates(startedPosition, Direction.EAST);
         rover = new Rover(startedCoordinates);
-        List<RoverCommand> roverCommands = List.of(RoverCommand.toRoverCommand(BACKWARD));
+        List<RoverMovement> roverMovements = List.of(RoverMovement.B);
 
-        rover.executeCommands(roverCommands);
+        rover.performMovements(roverMovements);
 
         Position expectedPosition = new Position(-1, 0);
         Coordinates expectedCoordinates = createCoordinates(expectedPosition, Direction.EAST);
@@ -113,12 +107,12 @@ class RoverShould {
     }
 
     @Test
-    void have_the_right_coordinates_after_executing_backward_command_in_south_direction() {
+    void have_the_right_coordinates_after_performing_backward_movement_in_south_direction() {
         startedCoordinates = createCoordinates(startedPosition, Direction.SOUTH);
         rover = new Rover(startedCoordinates);
-        List<RoverCommand> roverCommands = List.of(RoverCommand.toRoverCommand(BACKWARD));
+        List<RoverMovement> roverMovements = List.of(RoverMovement.B);
 
-        rover.executeCommands(roverCommands);
+        rover.performMovements(roverMovements);
 
         Position expectedPosition = new Position(0, 1);
         Coordinates expectedCoordinates = createCoordinates(expectedPosition, Direction.SOUTH);
@@ -127,12 +121,12 @@ class RoverShould {
     }
 
     @Test
-    void have_the_right_coordinates_after_executing_backward_command_in_west_direction() {
+    void have_the_right_coordinates_after_performing_backward_movement_in_west_direction() {
         startedCoordinates = createCoordinates(startedPosition, Direction.WEST);
         rover = new Rover(startedCoordinates);
-        List<RoverCommand> roverCommands = List.of(RoverCommand.toRoverCommand(BACKWARD));
+        List<RoverMovement> roverMovements = List.of(RoverMovement.B);
 
-        rover.executeCommands(roverCommands);
+        rover.performMovements(roverMovements);
 
         Position expectedPosition = new Position(1, 0);
         Coordinates expectedCoordinates = createCoordinates(expectedPosition, Direction.WEST);

@@ -9,32 +9,40 @@ public class Rover {
         this.coordinates = coordinates;
     }
 
-    public void executeCommands(List<RoverCommand> roverCommands){
-        roverCommands.stream().forEach(this::executeASingleCommand);
+    public void performMovements(List<RoverMovement> roverMovements){
+        roverMovements.stream().forEach(this::performAMovement);
     }
 
-    private void executeASingleCommand(RoverCommand roverCommand) {
-        if (isForwardCommand(roverCommand)){
-            moveForward();
-        } else if (isBackwardCommand(roverCommand)){
-            moveBackward();
+    private void performAMovement(RoverMovement roverMovement) {
+        switch (roverMovement){
+            case F: {
+                moveForward();
+                break;
+            } case B: {
+                moveBackward();
+                break;
+            } case L:{
+                turnLeft();
+                break;
+            } case R: {
+                turnRight();
+                break;
+            }
         }
-    }
-
-    private static boolean isForwardCommand(RoverCommand roverCommand) {
-        return MovementType.F.name().equalsIgnoreCase(roverCommand.getCommand());
     }
 
     private void moveForward() {
         this.coordinates.performForwardMovement();
     }
 
-    private static boolean isBackwardCommand(RoverCommand roverCommand) {
-        return MovementType.B.name().equalsIgnoreCase(roverCommand.getCommand());
-    }
-
     private void moveBackward() {
         this.coordinates.performBackwardMovement();
+    }
+    private void turnLeft() {
+        this.coordinates.performTurnLeftMovement();
+    }
+    private void turnRight() {
+        this.coordinates.performTurnRightMovement();
     }
 
     public Coordinates getCoordinates() {

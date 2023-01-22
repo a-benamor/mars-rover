@@ -1,7 +1,7 @@
 package fr.kaibee.mars.rover;
 
-import fr.kaibee.mars.rover.domain.RoverCommand;
-import fr.kaibee.mars.rover.domain.exceptions.WrongClientCommandException;
+import fr.kaibee.mars.rover.domain.RoverMovement;
+import fr.kaibee.mars.rover.domain.exceptions.UnsupportedClientCommandException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -12,6 +12,8 @@ class ClientCommandInterpreterShould {
     private static final Character WRONG_CLIENT_COMMAND = 'x';
     private static final Character FORWARD_CLIENT_COMMAND = 'f';
     private static final Character BACKWARD_CLIENT_COMMAND = 'b';
+    private static final Character TURN_LEFT_CLIENT_COMMAND = 'l';
+    private static final Character TURN_RIGHT_CLIENT_COMMAND = 'r';
     private ClientCommandInterpreter clientCommandInterpreter;
 
     @BeforeEach
@@ -21,25 +23,26 @@ class ClientCommandInterpreterShould {
 
     @Test
     void interpret_a_valid_client_command() {
-        Character[] clientCommands = {FORWARD_CLIENT_COMMAND, BACKWARD_CLIENT_COMMAND};
+        Character[] clientCommands = {FORWARD_CLIENT_COMMAND, TURN_LEFT_CLIENT_COMMAND,
+                BACKWARD_CLIENT_COMMAND, TURN_RIGHT_CLIENT_COMMAND};
 
-        List<RoverCommand> roverCommands = clientCommandInterpreter.toRoverCommands(clientCommands);
+        List<RoverMovement> roverMovements = clientCommandInterpreter.toRoverMovement(clientCommands);
 
-        RoverCommand expectedFirstRoverCommand = RoverCommand.toRoverCommand("f");
-        RoverCommand expectedSecondRoverCommand = RoverCommand.toRoverCommand("b");
-        Assertions.assertEquals(expectedFirstRoverCommand, roverCommands.get(0));
-        Assertions.assertEquals(expectedSecondRoverCommand, roverCommands.get(1));
+        Assertions.assertEquals(RoverMovement.F, roverMovements.get(0));
+        Assertions.assertEquals(RoverMovement.L, roverMovements.get(1));
+        Assertions.assertEquals(RoverMovement.B, roverMovements.get(2));
+        Assertions.assertEquals(RoverMovement.R, roverMovements.get(3));
     }
 
     @Test
-    void throw_an_exception_for_wrong_client_command() {
+    void throw_an_exception_for_unsupported_client_command() {
         Character[] clientCommands = {WRONG_CLIENT_COMMAND};
 
-        WrongClientCommandException wrongClientCommandException = Assertions.assertThrows(
-                WrongClientCommandException.class,
-                () -> clientCommandInterpreter.toRoverCommands(clientCommands));
+        UnsupportedClientCommandException unsupportedClientCommandException = Assertions.assertThrows(
+                UnsupportedClientCommandException.class,
+                () -> clientCommandInterpreter.toRoverMovement(clientCommands));
 
-        Assertions.assertEquals("client command x is not supported", wrongClientCommandException.getMessage());
+        Assertions.assertEquals("client command x is not supported", unsupportedClientCommandException.getMessage());
     }
 
 }
