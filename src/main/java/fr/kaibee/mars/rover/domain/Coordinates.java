@@ -1,64 +1,83 @@
 package fr.kaibee.mars.rover.domain;
 
-import java.util.Objects;
+import fr.kaibee.mars.rover.domain.exceptions.ObstacleEncounteredException;
+
+import java.util.*;
 
 public class Coordinates {
     private Position position;
     private Direction direction;
+    private Set<Position> obstacles;
 
     private Coordinates(Builder builder) {
         position = builder.position;
         direction = builder.direction;
+        obstacles = builder.obstacles;
     }
 
-    public void performForwardMovement(){
-        switch (direction){
-            case NORTH:{
-                position = position.moveForwardPositionY();
+    public void performForwardMovement() {
+        Position nextPosition = position;
+        switch (direction) {
+            case NORTH: {
+                nextPosition = position.moveForwardPositionY();
                 break;
-            } case EAST:{
-                position = position.moveForwardPositionX();
+            }
+            case EAST: {
+                nextPosition = position.moveForwardPositionX();
                 break;
-            } case SOUTH: {
-                position = position.moveBackwardPositionY();
+            }
+            case SOUTH: {
+                nextPosition = position.moveBackwardPositionY();
                 break;
-            } case WEST: {
-                position = position.moveBackwardPositionX();
+            }
+            case WEST: {
+                nextPosition = position.moveBackwardPositionX();
                 break;
             }
         }
+
+        position = checkAndGetPosition(nextPosition);
     }
 
     public void performBackwardMovement() {
-        switch (direction){
-            case NORTH:{
-                position = position.moveBackwardPositionY();
+        Position nextPosition = position;
+        switch (direction) {
+            case NORTH: {
+                nextPosition = position.moveBackwardPositionY();
                 break;
-            } case EAST:{
-                position = position.moveBackwardPositionX();
+            }
+            case EAST: {
+                nextPosition = position.moveBackwardPositionX();
                 break;
-            } case SOUTH: {
-                position = position.moveForwardPositionY();
+            }
+            case SOUTH: {
+                nextPosition = position.moveForwardPositionY();
                 break;
-            } case WEST: {
-                position = position.moveForwardPositionX();
+            }
+            case WEST: {
+                nextPosition = position.moveForwardPositionX();
                 break;
             }
         }
+
+        position = checkAndGetPosition(nextPosition);
     }
 
     public void performTurnLeftMovement() {
-        switch (direction){
+        switch (direction) {
             case NORTH: {
                 direction = Direction.WEST;
                 break;
-            } case EAST: {
+            }
+            case EAST: {
                 direction = Direction.NORTH;
                 break;
-            }case SOUTH: {
+            }
+            case SOUTH: {
                 direction = Direction.EAST;
                 break;
-            }case WEST: {
+            }
+            case WEST: {
                 direction = Direction.SOUTH;
                 break;
             }
@@ -66,22 +85,26 @@ public class Coordinates {
     }
 
     public void performTurnRightMovement() {
-        switch (direction){
+        switch (direction) {
             case NORTH: {
                 direction = Direction.EAST;
                 break;
-            } case EAST: {
+            }
+            case EAST: {
                 direction = Direction.SOUTH;
                 break;
-            }case SOUTH: {
+            }
+            case SOUTH: {
                 direction = Direction.WEST;
                 break;
-            }case WEST: {
+            }
+            case WEST: {
                 direction = Direction.NORTH;
                 break;
             }
         }
     }
+
     public Position getPosition() {
         return position;
     }
@@ -90,32 +113,13 @@ public class Coordinates {
         return direction;
     }
 
-    public static final class Builder {
-        private Position position;
-        private Direction direction;
-
-        private Builder() {
+    public Set<Position> getObstacles() {
+        if (obstacles == null) {
+            obstacles = new HashSet<>();
         }
 
-        public static Builder builder() {
-            return new Builder();
-        }
-
-        public Builder position(Position val) {
-            position = val;
-            return this;
-        }
-
-        public Builder direction(Direction val) {
-            direction = val;
-            return this;
-        }
-
-        public Coordinates build() {
-            return new Coordinates(this);
-        }
+        return obstacles;
     }
-
 
     @Override
     public boolean equals(Object o) {
@@ -136,5 +140,49 @@ public class Coordinates {
                 "position=" + position +
                 ", direction=" + direction +
                 '}';
+    }
+
+    public static final class Builder {
+        private Position position;
+        private Direction direction;
+        private Set<Position> obstacles;
+
+        private Builder() {
+        }
+
+        public static Builder builder() {
+            return new Builder();
+        }
+
+        public Builder position(Position val) {
+            position = val;
+            return this;
+        }
+
+        public Builder direction(Direction val) {
+            direction = val;
+            return this;
+        }
+
+        public Builder obstacles(Set<Position> val) {
+            obstacles = val;
+            return this;
+        }
+
+        public Coordinates build() {
+            return new Coordinates(this);
+        }
+    }
+
+    private Position checkAndGetPosition(Position position) {
+        if (isPositionIsAnObstacle(position)) {
+            throw new ObstacleEncounteredException("obstacle encountered at position" + position.toString());
+        }
+
+        return position;
+    }
+
+    private boolean isPositionIsAnObstacle(Position position) {
+        return getObstacles().contains(position);
     }
 }
