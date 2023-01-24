@@ -1,5 +1,6 @@
-package fr.kaibee.mars.rover;
+package fr.kaibee.mars.rover.ports.adapters;
 
+import fr.kaibee.mars.rover.ClientCommandInterpreter;
 import fr.kaibee.mars.rover.domain.Rover;
 import fr.kaibee.mars.rover.domain.RoverMovement;
 import fr.kaibee.mars.rover.ports.inputs.RoverService;

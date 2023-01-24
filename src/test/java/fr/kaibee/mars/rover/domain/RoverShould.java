@@ -1,145 +1,86 @@
 package fr.kaibee.mars.rover.domain;
 
+import fr.kaibee.mars.rover.domain.exceptions.ObstacleEncounteredException;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Stream;
 
 class RoverShould {
 
-    private static final String FORWARD = "F";
-    private static final String BACKWARD = "B";
+    public static final int GRID_SIZE = 4;
+    public static final Grid NO_OBSTACLE_GRID = Grid.emptyGrid(GRID_SIZE);
+
+    private final static Position FIRST_OBSTACLE = new Position(1, 2);
+    private final static Position SECOND_OBSTACLE = new Position(2, 2);
+    private final static Grid GRID = new Grid(GRID_SIZE, Set.of(FIRST_OBSTACLE, SECOND_OBSTACLE));
 
     private Rover rover;
 
-    private Coordinates startedCoordinates;
-    private Position startedPosition;
+    @ParameterizedTest
+    @MethodSource("useCaseProvider")
+    void have_the_right_coordinates_after_movement(RoverMovement roverMovement, int startPositionX, int startPositionY, Direction startDirection,
+                                                   int expectedPositionX, int expectedPositionY, Direction expectedDirection) {
 
-    @BeforeEach
-    void setUp() {
-        startedPosition = new Position(0, 0);
-        startedCoordinates = createCoordinates(startedPosition, Direction.NORTH);
-        rover = new Rover(startedCoordinates);
-    }
+        Coordinates startCoordinates = createCoordinates(startPositionX, startPositionY, startDirection);
+        rover = new Rover(startCoordinates, NO_OBSTACLE_GRID);
 
-    @Test
-    void have_the_right_coordinates() {
-        Position expectedPosition = new Position(0, 0);
-        Coordinates expectedCoordinates = createCoordinates(expectedPosition, Direction.NORTH);
+        List<RoverMovement> roverMovements = List.of(roverMovement);
+        rover.performMovements(roverMovements);
 
+        Coordinates expectedCoordinates = createCoordinates(expectedPositionX, expectedPositionY, expectedDirection);
         Assertions.assertEquals(expectedCoordinates, rover.getCoordinates());
     }
 
+    private static Stream<Arguments> useCaseProvider() {
+        return Stream.of(
+                Arguments.of(RoverMovement.F, 1, 1, Direction.NORTH, 1, 2, Direction.NORTH),
+                Arguments.of(RoverMovement.F, 1, 1, Direction.EAST, 2, 1, Direction.EAST),
+                Arguments.of(RoverMovement.F, 1, 1, Direction.SOUTH, 1, GRID.size(), Direction.SOUTH),
+                Arguments.of(RoverMovement.F, 1, 1, Direction.WEST, GRID.size(), 1, Direction.WEST),
+                Arguments.of(RoverMovement.B, 1, 1, Direction.NORTH, 1, GRID_SIZE, Direction.NORTH),
+                Arguments.of(RoverMovement.B, 1, 1, Direction.EAST, GRID_SIZE, 1, Direction.EAST),
+                Arguments.of(RoverMovement.B, 1, 1, Direction.SOUTH, 1, 2, Direction.SOUTH),
+                Arguments.of(RoverMovement.B, 1, 1, Direction.WEST, 2, 1, Direction.WEST)
+        );
+    }
+
+
     @Test
-    void have_the_right_coordinates_after_performing_forward_movement_in_north_direction() {
+    void throw_exception_when_performing_forward_to_an_obstacle() {
+        Coordinates coordinates = createCoordinates(1, 1, Direction.NORTH);
+        rover = new Rover(coordinates, GRID);
         List<RoverMovement> roverMovements = List.of(RoverMovement.F);
 
-        rover.performMovements(roverMovements);
+        ObstacleEncounteredException obstacleEncounteredException = Assertions.assertThrows(
+                ObstacleEncounteredException.class,
+                () -> rover.performMovements(roverMovements));
 
-        Position expectedPosition = new Position(0, 1);
-        Coordinates expectedCoordinates = createCoordinates(expectedPosition, Direction.NORTH);
-        Assertions.assertEquals(expectedCoordinates, rover.getCoordinates());
+        Assertions.assertEquals("obstacle encountered at position" + FIRST_OBSTACLE,
+                obstacleEncounteredException.getMessage());
     }
 
     @Test
-    void have_the_right_coordinates_after_performing_forward_movement_in_east_direction() {
-        startedCoordinates = createCoordinates(startedPosition, Direction.EAST);
-        rover = new Rover(startedCoordinates);
-        List<RoverMovement> roverMovements = List.of(RoverMovement.F);
-
-        rover.performMovements(roverMovements);
-
-        Position expectedPosition = new Position(1, 0);
-        Coordinates expectedCoordinates = createCoordinates(expectedPosition, Direction.EAST);
-        Assertions.assertEquals(expectedCoordinates, rover.getCoordinates());
-    }
-
-    @Test
-    void have_the_right_coordinates_after_performing_forward_movement_in_south_direction() {
-        startedCoordinates = createCoordinates(startedPosition, Direction.SOUTH);
-        rover = new Rover(startedCoordinates);
-        List<RoverMovement> roverMovements = List.of(RoverMovement.F);
-
-        rover.performMovements(roverMovements);
-
-        Position expectedPosition = new Position(0, -1);
-        Coordinates expectedCoordinates = createCoordinates(expectedPosition, Direction.SOUTH);
-        Assertions.assertEquals(expectedCoordinates, rover.getCoordinates());
-    }
-
-    @Test
-    void have_the_right_coordinates_after_performing_forward_movement_in_west_direction() {
-        startedCoordinates = createCoordinates(startedPosition, Direction.WEST);
-        rover = new Rover(startedCoordinates);
-        List<RoverMovement> roverMovements = List.of(RoverMovement.F);
-
-        rover.performMovements(roverMovements);
-
-        Position expectedPosition = new Position(-1, 0);
-        Coordinates expectedCoordinates = createCoordinates(expectedPosition, Direction.WEST);
-        Assertions.assertEquals(expectedCoordinates, rover.getCoordinates());
-    }
-
-    @Test
-    void have_the_right_coordinates_after_performing_backward_movement_in_north_direction() {
+    void throw_exception_when_performing_backward_to_an_obstacle() {
+        Coordinates coordinates = createCoordinates(2, 3, Direction.NORTH);
+        rover = new Rover(coordinates, GRID);
         List<RoverMovement> roverMovements = List.of(RoverMovement.B);
 
-        rover.performMovements(roverMovements);
+        ObstacleEncounteredException obstacleEncounteredException = Assertions.assertThrows(
+                ObstacleEncounteredException.class,
+                () -> rover.performMovements(roverMovements));
 
-        Position expectedPosition = new Position(0, -1);
-        Coordinates expectedCoordinates = createCoordinates(expectedPosition, Direction.NORTH);
-        Assertions.assertEquals(expectedCoordinates, rover.getCoordinates());
+        Assertions.assertEquals("obstacle encountered at position" + SECOND_OBSTACLE,
+                obstacleEncounteredException.getMessage());
     }
 
-    @Test
-    void have_the_right_coordinates_after_performing_backward_movement_in_east_direction() {
-        startedCoordinates = createCoordinates(startedPosition, Direction.EAST);
-        rover = new Rover(startedCoordinates);
-        List<RoverMovement> roverMovements = List.of(RoverMovement.B);
-
-        rover.performMovements(roverMovements);
-
-        Position expectedPosition = new Position(-1, 0);
-        Coordinates expectedCoordinates = createCoordinates(expectedPosition, Direction.EAST);
-
-        Assertions.assertEquals(expectedCoordinates, rover.getCoordinates());
+    private static Coordinates createCoordinates(int positionX, int positionY, Direction direction) {
+        Position position = new Position(positionX, positionY);
+        return new Coordinates(position, direction);
     }
-
-    @Test
-    void have_the_right_coordinates_after_performing_backward_movement_in_south_direction() {
-        startedCoordinates = createCoordinates(startedPosition, Direction.SOUTH);
-        rover = new Rover(startedCoordinates);
-        List<RoverMovement> roverMovements = List.of(RoverMovement.B);
-
-        rover.performMovements(roverMovements);
-
-        Position expectedPosition = new Position(0, 1);
-        Coordinates expectedCoordinates = createCoordinates(expectedPosition, Direction.SOUTH);
-
-        Assertions.assertEquals(expectedCoordinates, rover.getCoordinates());
-    }
-
-    @Test
-    void have_the_right_coordinates_after_performing_backward_movement_in_west_direction() {
-        startedCoordinates = createCoordinates(startedPosition, Direction.WEST);
-        rover = new Rover(startedCoordinates);
-        List<RoverMovement> roverMovements = List.of(RoverMovement.B);
-
-        rover.performMovements(roverMovements);
-
-        Position expectedPosition = new Position(1, 0);
-        Coordinates expectedCoordinates = createCoordinates(expectedPosition, Direction.WEST);
-
-        Assertions.assertEquals(expectedCoordinates, rover.getCoordinates());
-    }
-
-    private Coordinates createCoordinates(Position startedPosition, Direction east) {
-        return Coordinates.Builder.builder()
-                .position(startedPosition)
-                .direction(east)
-                .build();
-    }
-
-
 }

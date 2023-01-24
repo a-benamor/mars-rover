@@ -4,48 +4,35 @@ import java.util.List;
 
 public class Rover {
     private Coordinates coordinates;
+    private final Grid grid;
 
-    public Rover(Coordinates coordinates) {
+    public Rover(Coordinates coordinates, Grid grid) {
         this.coordinates = coordinates;
+        this.grid = grid;
     }
 
-    public void performMovements(List<RoverMovement> roverMovements){
-        roverMovements.stream().forEach(this::performAMovement);
-    }
-
-    private void performAMovement(RoverMovement roverMovement) {
-        switch (roverMovement){
-            case F: {
-                moveForward();
-                break;
-            } case B: {
-                moveBackward();
-                break;
-            } case L:{
-                turnLeft();
-                break;
-            } case R: {
-                turnRight();
-                break;
-            }
-        }
-    }
-
-    private void moveForward() {
-        this.coordinates.performForwardMovement();
-    }
-
-    private void moveBackward() {
-        this.coordinates.performBackwardMovement();
-    }
-    private void turnLeft() {
-        this.coordinates.performTurnLeftMovement();
-    }
-    private void turnRight() {
-        this.coordinates.performTurnRightMovement();
+    public void performMovements(List<RoverMovement> roverMovements) {
+        roverMovements.forEach(this::performAMovement);
     }
 
     public Coordinates getCoordinates() {
         return coordinates;
+    }
+
+    private void performAMovement(RoverMovement roverMovement) {
+        coordinates = switch (roverMovement) {
+            case F -> {
+                Coordinates nextCoordinate = coordinates.moveForward(grid);
+                grid.checkAndGetPosition(nextCoordinate.position());
+                yield nextCoordinate;
+            }
+            case B -> {
+                Coordinates nextCoordinate = coordinates.moveBackward(grid);
+                grid.checkAndGetPosition(nextCoordinate.position());
+                yield nextCoordinate;
+            }
+            case L -> coordinates.turnLeft();
+            case R -> coordinates.turnRight();
+        };
     }
 }

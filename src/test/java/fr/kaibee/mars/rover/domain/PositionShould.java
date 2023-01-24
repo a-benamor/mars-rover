@@ -5,48 +5,100 @@ import org.junit.jupiter.api.Test;
 
 class PositionShould {
 
+    public static final int SIZE = 4;
+    public static final Grid GRID = Grid.emptyGrid(SIZE);
+    public static final int MIN_X = 1;
+    public static final int MIN_Y = 1;
+    public static final int MAX_X = SIZE;
+    public static final int MAX_Y = SIZE;
+
+    @Test
+    void should_move_forward_positionX() {
+        int initialPositionY = 2;
+        int initialPositionX = MIN_X;
+        Position initialPosition = new Position(initialPositionX, initialPositionY);
+
+        Position newPosition = initialPosition.moveForwardPositionX(GRID);
+
+        assertPositionIsEqualTo(newPosition, initialPositionX + 1, initialPositionY);
+    }
+
+    @Test
+    void should_move_backward_positionX() {
+        int initialPositionY = 2;
+        int initialPositionX = 2;
+        Position initialPosition = new Position(initialPositionX, initialPositionY);
+
+        Position newPosition = initialPosition.moveBackwardPositionX(GRID);
+
+        assertPositionIsEqualTo(newPosition, initialPositionX - 1, initialPositionY);
+    }
+
+    @Test
+    void should_move_forward_positionY() {
+        int initialPositionY = MIN_Y;
+        int initialPositionX = MIN_X;
+        Position initialPosition = new Position(initialPositionX, initialPositionY);
+
+        Position newPosition = initialPosition.moveForwardPositionY(GRID);
+
+        assertPositionIsEqualTo(newPosition, initialPositionX, initialPositionY + 1);
+    }
+
+    @Test
+    void should_move_backward_positionY() {
+        int initialPositionY = 2;
+        int initialPositionX = MIN_X;
+        Position initialPosition = new Position(initialPositionX, initialPositionY);
+
+        Position newPosition = initialPosition.moveBackwardPositionY(GRID);
+
+        assertPositionIsEqualTo(newPosition, initialPositionX, initialPositionY - 1);
+    }
+
+
     @Test
     void return_the_left_edge_when_performing_forward_movement_at_right_edge() {
-        int positionY = 2;
-        Position positionAtRightEdge = new Position(Position.MARS_GRID_MAX_X, positionY);
+        int initialPositionY = 2;
+        Position positionAtRightEdge = new Position(MAX_X, initialPositionY);
 
-        Position positionAtLeftEdge = positionAtRightEdge.moveForwardPositionX();
+        Position newPosition = positionAtRightEdge.moveForwardPositionX(GRID);
 
-        Assertions.assertEquals(-Position.MARS_GRID_MAX_X, positionAtLeftEdge.positionX());
-        Assertions.assertEquals(positionY, positionAtLeftEdge.positionY());
+        assertPositionIsEqualTo(newPosition, MIN_X, initialPositionY);
     }
 
     @Test
     void return_the_right_edge_when_performing_backward_movement_at_left_edge() {
-        int positionY = 2;
-        Position positionAtLeftEdge = new Position(-Position.MARS_GRID_MAX_X, positionY);
+        int initialPositionY = 2;
+        Position positionAtLeftEdge = new Position(MIN_X, initialPositionY);
 
-        Position positionAtRightEdge = positionAtLeftEdge.moveBackwardPositionX();
+        Position newPosition = positionAtLeftEdge.moveBackwardPositionX(GRID);
 
-        Assertions.assertEquals(Position.MARS_GRID_MAX_X, positionAtRightEdge.positionX());
-        Assertions.assertEquals(positionY, positionAtRightEdge.positionY());
+        assertPositionIsEqualTo(newPosition, MAX_X, initialPositionY);
     }
 
     @Test
     void return_the_bottom_edge_when_performing_forward_movement_at_top_edge() {
-        int positionX = 2;
-        Position positionAtTopEdge = new Position(positionX, Position.MARS_GRID_MAX_Y);
+        int initialPositionX = 2;
+        Position positionAtTopEdge = new Position(initialPositionX, MAX_Y);
 
-        Position positionAtBottomEdge = positionAtTopEdge.moveForwardPositionY();
+        Position newPosition = positionAtTopEdge.moveForwardPositionY(GRID);
 
-        Assertions.assertEquals(positionX, positionAtBottomEdge.positionX());
-        Assertions.assertEquals(-Position.MARS_GRID_MAX_Y, positionAtBottomEdge.positionY());
+        assertPositionIsEqualTo(newPosition, initialPositionX, MIN_Y);
     }
 
     @Test
     void return_the_top_edge_when_performing_backward_movement_at_bottom_edge() {
-        int positionX = 2;
-        Position positionAtBottomEdge = new Position(positionX, -Position.MARS_GRID_MAX_Y);
+        int initialPositionX = 2;
+        Position positionAtBottomEdge = new Position(initialPositionX, MIN_Y);
 
-        Position positionAtTopEdge = positionAtBottomEdge.moveBackwardPositionY();
+        Position newPosition = positionAtBottomEdge.moveBackwardPositionY(GRID);
 
-        Assertions.assertEquals(positionX, positionAtTopEdge.positionX());
-        Assertions.assertEquals(Position.MARS_GRID_MAX_Y, positionAtTopEdge.positionY());
+        assertPositionIsEqualTo(newPosition, initialPositionX, MAX_Y);
     }
 
+    private static void assertPositionIsEqualTo(Position newPosition, int expectedX, int expectedY) {
+        Assertions.assertEquals(expectedX, newPosition.positionX());
+        Assertions.assertEquals(expectedY, newPosition.positionY());
+    }
 }
