@@ -12,8 +12,8 @@ class PositionShould {
 
         Position positionAtLeftEdge = positionAtRightEdge.moveForwardPositionX();
 
-        Assertions.assertEquals(-Position.MARS_GRID_MAX_X, positionAtLeftEdge.getPositionX());
-        Assertions.assertEquals(positionY, positionAtLeftEdge.getPositionY());
+        Assertions.assertEquals(-Position.MARS_GRID_MAX_X, positionAtLeftEdge.positionX());
+        Assertions.assertEquals(positionY, positionAtLeftEdge.positionY());
     }
 
     @Test
@@ -23,8 +23,8 @@ class PositionShould {
 
         Position positionAtRightEdge = positionAtLeftEdge.moveBackwardPositionX();
 
-        Assertions.assertEquals(Position.MARS_GRID_MAX_X, positionAtRightEdge.getPositionX());
-        Assertions.assertEquals(positionY, positionAtRightEdge.getPositionY());
+        Assertions.assertEquals(Position.MARS_GRID_MAX_X, positionAtRightEdge.positionX());
+        Assertions.assertEquals(positionY, positionAtRightEdge.positionY());
     }
 
     @Test
@@ -34,8 +34,8 @@ class PositionShould {
 
         Position positionAtBottomEdge = positionAtTopEdge.moveForwardPositionY();
 
-        Assertions.assertEquals(positionX, positionAtBottomEdge.getPositionX());
-        Assertions.assertEquals(-Position.MARS_GRID_MAX_Y, positionAtBottomEdge.getPositionY());
+        Assertions.assertEquals(positionX, positionAtBottomEdge.positionX());
+        Assertions.assertEquals(-Position.MARS_GRID_MAX_Y, positionAtBottomEdge.positionY());
     }
 
     @Test
@@ -45,8 +45,8 @@ class PositionShould {
 
         Position positionAtTopEdge = positionAtBottomEdge.moveBackwardPositionY();
 
-        Assertions.assertEquals(positionX, positionAtTopEdge.getPositionX());
-        Assertions.assertEquals(Position.MARS_GRID_MAX_Y, positionAtTopEdge.getPositionY());
+        Assertions.assertEquals(positionX, positionAtTopEdge.positionX());
+        Assertions.assertEquals(Position.MARS_GRID_MAX_Y, positionAtTopEdge.positionY());
     }
 
 }

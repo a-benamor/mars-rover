@@ -16,93 +16,47 @@ public class Coordinates {
     }
 
     public void performForwardMovement() {
-        Position nextPosition = position;
+        Position nextPosition =
         switch (direction) {
-            case NORTH: {
-                nextPosition = position.moveForwardPositionY();
-                break;
-            }
-            case EAST: {
-                nextPosition = position.moveForwardPositionX();
-                break;
-            }
-            case SOUTH: {
-                nextPosition = position.moveBackwardPositionY();
-                break;
-            }
-            case WEST: {
-                nextPosition = position.moveBackwardPositionX();
-                break;
-            }
-        }
+            case NORTH -> position.moveForwardPositionY();
+            case EAST -> position.moveForwardPositionX();
+            case SOUTH -> position.moveBackwardPositionY();
+            case WEST -> position.moveBackwardPositionX();
+        };
 
         position = checkAndGetPosition(nextPosition);
     }
 
     public void performBackwardMovement() {
-        Position nextPosition = position;
+        Position nextPosition =
         switch (direction) {
-            case NORTH: {
-                nextPosition = position.moveBackwardPositionY();
-                break;
-            }
-            case EAST: {
-                nextPosition = position.moveBackwardPositionX();
-                break;
-            }
-            case SOUTH: {
-                nextPosition = position.moveForwardPositionY();
-                break;
-            }
-            case WEST: {
-                nextPosition = position.moveForwardPositionX();
-                break;
-            }
-        }
+            case NORTH -> position.moveBackwardPositionY();
+            case EAST -> position.moveBackwardPositionX();
+            case SOUTH -> position.moveForwardPositionY();
+            case WEST -> position.moveForwardPositionX();
+        };
 
         position = checkAndGetPosition(nextPosition);
     }
 
     public void performTurnLeftMovement() {
+        direction =
         switch (direction) {
-            case NORTH: {
-                direction = Direction.WEST;
-                break;
-            }
-            case EAST: {
-                direction = Direction.NORTH;
-                break;
-            }
-            case SOUTH: {
-                direction = Direction.EAST;
-                break;
-            }
-            case WEST: {
-                direction = Direction.SOUTH;
-                break;
-            }
-        }
+            case NORTH -> Direction.WEST;
+            case EAST -> Direction.NORTH;
+            case SOUTH -> Direction.EAST;
+            case WEST -> Direction.SOUTH;
+        };
     }
 
     public void performTurnRightMovement() {
+        direction =
         switch (direction) {
-            case NORTH: {
-                direction = Direction.EAST;
-                break;
-            }
-            case EAST: {
-                direction = Direction.SOUTH;
-                break;
-            }
-            case SOUTH: {
-                direction = Direction.WEST;
-                break;
-            }
-            case WEST: {
-                direction = Direction.NORTH;
-                break;
-            }
-        }
+            case NORTH -> Direction.EAST;
+            case EAST -> Direction.SOUTH;
+            case SOUTH -> Direction.WEST;
+            case WEST -> Direction.NORTH;
+        };
     }
 
     public Position getPosition() {
