@@ -3,13 +3,13 @@ package fr.kaibee.mars.rover.domain;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-class CoordinatesShould {
+class CoordinatesTest {
     private Coordinates coordinates;
     private final static Position START_POSITION = new Position(0, 0);
 
 
     @Test
-    void have_the_west_direction_when_performing_turn_left_in_north_direction() {
+    void should_have_the_west_direction_when_performing_turn_left_in_north_direction() {
         coordinates = createCoordinatesWithDirection(Direction.NORTH);
 
         Coordinates newCoordinates = coordinates.turnLeft();
@@ -18,7 +18,7 @@ class CoordinatesShould {
     }
 
     @Test
-    void have_north_direction_when_performing_turn_left_in_east_direction() {
+    void should_have_north_direction_when_performing_turn_left_in_east_direction() {
         coordinates = createCoordinatesWithDirection(Direction.EAST);
 
         Coordinates newCoordinates = coordinates.turnLeft();
@@ -27,7 +27,7 @@ class CoordinatesShould {
     }
 
     @Test
-    void have_east_direction_when_performing_turn_left_in_south_direction() {
+    void should_have_east_direction_when_performing_turn_left_in_south_direction() {
         coordinates = createCoordinatesWithDirection(Direction.SOUTH);
 
         Coordinates newCoordinates = coordinates.turnLeft();
@@ -36,7 +36,7 @@ class CoordinatesShould {
     }
 
     @Test
-    void have_south_direction_when_performing_turn_left_in_west_direction() {
+    void should_have_south_direction_when_performing_turn_left_in_west_direction() {
         coordinates = createCoordinatesWithDirection(Direction.WEST);
 
         Coordinates newCoordinates = coordinates.turnLeft();
@@ -45,7 +45,7 @@ class CoordinatesShould {
     }
 
     @Test
-    void have_east_direction_when_performing_turn_right_in_north_direction() {
+    void should_have_east_direction_when_performing_turn_right_in_north_direction() {
         coordinates = createCoordinatesWithDirection(Direction.NORTH);
 
         Coordinates newCoordinates = coordinates.turnRight();
@@ -54,7 +54,7 @@ class CoordinatesShould {
     }
 
     @Test
-    void have_south_direction_when_performing_turn_right_in_east_direction() {
+    void should_have_south_direction_when_performing_turn_right_in_east_direction() {
         coordinates = createCoordinatesWithDirection(Direction.EAST);
 
         Coordinates newCoordinates = coordinates.turnRight();
@@ -63,7 +63,7 @@ class CoordinatesShould {
     }
 
     @Test
-    void have_west_direction_when_performing_turn_right_in_south_direction() {
+    void should_have_west_direction_when_performing_turn_right_in_south_direction() {
         coordinates = createCoordinatesWithDirection(Direction.SOUTH);
 
         Coordinates newCoordinates = coordinates.turnRight();
@@ -72,7 +72,7 @@ class CoordinatesShould {
     }
 
     @Test
-    void have_north_direction_when_performing_turn_right_in_west_direction() {
+    void should_have_north_direction_when_performing_turn_right_in_west_direction() {
         coordinates = createCoordinatesWithDirection(Direction.WEST);
 
         Coordinates newCoordinates = coordinates.turnRight();
