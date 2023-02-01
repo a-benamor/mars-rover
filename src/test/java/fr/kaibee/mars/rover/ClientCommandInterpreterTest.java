@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-class ClientCommandInterpreterShould {
+class ClientCommandInterpreterTest {
     private static final Character WRONG_CLIENT_COMMAND = 'x';
     private static final Character FORWARD_CLIENT_COMMAND = 'f';
     private static final Character BACKWARD_CLIENT_COMMAND = 'b';
@@ -22,7 +22,7 @@ class ClientCommandInterpreterShould {
     }
 
     @Test
-    void interpret_a_valid_client_command() {
+    void should_interpret_a_valid_client_command() {
         Character[] clientCommands = {FORWARD_CLIENT_COMMAND, TURN_LEFT_CLIENT_COMMAND,
                 BACKWARD_CLIENT_COMMAND, TURN_RIGHT_CLIENT_COMMAND};
 
@@ -35,7 +35,7 @@ class ClientCommandInterpreterShould {
     }
 
     @Test
-    void throw_an_exception_for_unsupported_client_command() {
+    void should_throw_an_exception_for_unsupported_client_command() {
         Character[] clientCommands = {WRONG_CLIENT_COMMAND};
 
         UnsupportedClientCommandException unsupportedClientCommandException = Assertions.assertThrows(

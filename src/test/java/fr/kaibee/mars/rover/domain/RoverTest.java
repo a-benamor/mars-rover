@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Stream;
 
-class RoverShould {
+class RoverTest {
 
     public static final int GRID_SIZE = 4;
     public static final Grid NO_OBSTACLE_GRID = Grid.emptyGrid(GRID_SIZE);
@@ -24,7 +24,7 @@ class RoverShould {
 
     @ParameterizedTest
     @MethodSource("useCaseProvider")
-    void have_the_right_coordinates_after_movement(RoverMovement roverMovement, int startPositionX, int startPositionY, Direction startDirection,
+    void should_have_the_right_coordinates_after_movement(RoverMovement roverMovement, int startPositionX, int startPositionY, Direction startDirection,
                                                    int expectedPositionX, int expectedPositionY, Direction expectedDirection) {
 
         Coordinates startCoordinates = createCoordinates(startPositionX, startPositionY, startDirection);
@@ -52,7 +52,7 @@ class RoverShould {
 
 
     @Test
-    void throw_exception_when_performing_forward_to_an_obstacle() {
+    void should_throw_exception_when_performing_forward_to_an_obstacle() {
         Coordinates coordinates = createCoordinates(1, 1, Direction.NORTH);
         rover = new Rover(coordinates, GRID);
         List<RoverMovement> roverMovements = List.of(RoverMovement.F);
@@ -66,7 +66,7 @@ class RoverShould {
     }
 
     @Test
-    void throw_exception_when_performing_backward_to_an_obstacle() {
+    void should_throw_exception_when_performing_backward_to_an_obstacle() {
         Coordinates coordinates = createCoordinates(2, 3, Direction.NORTH);
         rover = new Rover(coordinates, GRID);
         List<RoverMovement> roverMovements = List.of(RoverMovement.B);

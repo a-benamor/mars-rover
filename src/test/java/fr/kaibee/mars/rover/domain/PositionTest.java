@@ -3,7 +3,7 @@ package fr.kaibee.mars.rover.domain;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-class PositionShould {
+class PositionTest {
 
     public static final int SIZE = 4;
     public static final Grid GRID = Grid.emptyGrid(SIZE);

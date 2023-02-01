@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Set;
 
-class RoverServiceShould {
+class RoverServiceTest {
 
     private static final Character FORWARD_CLIENT_COMMAND = 'f';
     private static final Character BACKWARD_CLIENT_COMMAND = 'b';
@@ -45,7 +45,7 @@ class RoverServiceShould {
     }
 
     @Test
-    void return_rover_with_the_right_coordinates_after_commands_execution() {
+    void should_return_rover_with_the_right_coordinates_after_commands_execution() {
 
         Coordinates initialCoordinates = createCoordinates(1, 1, Direction.NORTH);
         rover = new Rover(initialCoordinates, Grid.emptyGrid(GRID_SIZE));
@@ -57,7 +57,7 @@ class RoverServiceShould {
     }
 
     @Test
-    void throw_an_exception_when_encountering_an_obstacle() {
+    void should_throw_an_exception_when_encountering_an_obstacle() {
         Position obstaclePosition = new Position(10, 4);
         obstacles = Set.of(obstaclePosition);
         Coordinates initialCoordinates = createCoordinates(1, 1, Direction.NORTH);
