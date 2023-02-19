@@ -1,6 +1,6 @@
 ## Mars rover kata
 
-A proposition for mars rover kata.
+A proposition for mars rover kata https://kata-log.rocks/mars-rover-kata
 
 - The coordinates (1,1) is at the left edge of Mars grid
 - MARS_GRID_MAX_X is 10
